@@ -1,0 +1,19 @@
+{% if messages %}
+
+    {% for message in messages %}
+    <div id="message" class="container">
+        <div class="alert alert-{% if message.tag == 'error' %}danger{% else %}{{ message.tags }}{% endif %} text-center " alert-dismissable role="alert" style="border-radius: 30rem;">
+
+            <strong>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    Error:
+                {% else %}
+                    {{message.tags|title}}
+                {% endif %}
+            </strong>
+            {{message}}
+        </div>
+    </div>
+    {% endfor %}
+
+{% endif %}

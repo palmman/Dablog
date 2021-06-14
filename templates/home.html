@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<!-- Page Header-->
+<header class="masthead" style="background-image: url('{% static 'assets/img/home-bg.jpg' %}')">
+    <div class="container position-relative px-4 px-lg-5">
+        {% include 'includes/alert.html' %}
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="site-heading">
+                    <h1>Dablog</h1>
+                    <span class="subheading">Find content that you need here.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- Main Content-->
+<div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+            <form id="contactForm" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-floating">
+                    <input class="form-control" id="loginUsername" type="text" placeholder="Enter your username" data-sb-validations="required" name="title" />
+                    <label for="name">Title:</label>
+                </div>
+                <div class="form-floating">
+                    {{form.media}}
+                    {{form.as_p}}
+                </div>
+                <label for="name">Upload file:</label>
+                <input class="form-control" id="loginUsername" type="file" placeholder="Enter your username" data-sb-validations="required" name="image" />
+                <br>
+                {% if request.user.is_authenticated %}
+                <button type="submit" class="btn btn-primary text-uppercase">Add</button>
+                {% else %}
+                <button type="submit" class="btn btn-primary text-uppercase" disabled>Plaese Login</button>
+                {% endif %}
+            </form>
+        </div>
+        <div class="col-md-10 col-lg-8 col-xl-7">
+            <!-- Post preview-->
+            {% for blogs in blogs %}
+            <div class="post-preview">
+                <a href="{% url 'blog_detail' blogs.slug %}">
+                    <h2 class="post-title">{{blogs.title}}</h2>
+                    <h3 class="post-subtitle">{{blogs.content|safe}}</h3>
+                </a>
+                <p class="post-meta">
+                    Posted by
+                    <a href="#!">{{blogs.user}}</a>
+                    on {{blogs.date_created}}
+                </p>
+            </div>
+            <!-- Divider-->
+            <hr class="my-4" />
+            {% endfor %}
+            <!-- Pager-->
+            <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="#!">Older Posts →</a></div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
